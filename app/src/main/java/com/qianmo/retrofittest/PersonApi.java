@@ -9,7 +9,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface PersonService {
+public interface PersonApi {
     @Headers({
             "Cache-Control: max-age=640000",
             "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
