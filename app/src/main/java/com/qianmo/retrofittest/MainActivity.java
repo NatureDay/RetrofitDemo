@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,43 +33,44 @@ public class MainActivity extends AppCompatActivity {
 //        UserApi userApi = retrofit.create(UserApi.class);
 
 
-        Call<String> call = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
-        new BaseRequest(this,call).handleRequest(new ResponseCallBack() {
-            @Override
-            public void onResponse(Call call, Response response) {
-                super.onResponse(call, response);
-            }
+        Call<JSONObject> call = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
 
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                super.onFailure(call, t);
-            }
-
-            @Override
-            public void onRequest() {
-                super.onRequest();
-            }
-        });
-
-
-//        call.enqueue(new Callback<String>() {
+//        new BaseRequest(this,call).handleRequest(new ResponseCallBack() {
 //            @Override
-//            public void onResponse(Call<String> call, Response<String> response) {
-//                Log.e("fff", "-------call====111=" + call);
-//                Log.e("fff", "-------response=====" + response);
-//                Log.e("fff", "-------body=====" + response.body());
-//                Log.e("fff", "-------message=====" + response.message());
-//                Log.e("fff", "-------code=====" + response.code());
-//                Log.e("fff", "-------headers=====" + response.headers());
-//                Log.e("fff", "-------errorBody=====" + response.errorBody());
+//            public void onResponse(Call call, Response response) {
+//                super.onResponse(call, response);
 //            }
 //
 //            @Override
-//            public void onFailure(Call<String> call, Throwable t) {
-//                Log.e("fff", "-------call====222=" + call);
-//                Log.e("fff", "-------Throwable====222=" + t);
+//            public void onFailure(Call call, Throwable t) {
+//                super.onFailure(call, t);
+//            }
+//
+//            @Override
+//            public void onRequest() {
+//                super.onRequest();
 //            }
 //        });
+
+
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                Log.e("fff", "-------call====111=" + call);
+                Log.e("fff", "-------response=====" + response.toString());
+                Log.e("fff", "-------body=====" + response.body());
+                Log.e("fff", "-------message=====" + response.message());
+                Log.e("fff", "-------code=====" + response.code());
+                Log.e("fff", "-------headers=====" + response.headers());
+                Log.e("fff", "-------errorBody=====" + response.errorBody());
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Log.e("fff", "-------call====222=" + call);
+                Log.e("fff", "-------Throwable====222=" + t);
+            }
+        });
     }
 
 

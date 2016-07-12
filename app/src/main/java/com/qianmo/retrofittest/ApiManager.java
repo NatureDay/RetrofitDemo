@@ -2,6 +2,7 @@ package com.qianmo.retrofittest;
 
 import android.content.Context;
 
+import com.qianmo.retrofittest.converter.JsonConverterFactory;
 import com.qianmo.retrofittest.persistentcookiejar.ClearableCookieJar;
 import com.qianmo.retrofittest.persistentcookiejar.PersistentCookieJar;
 import com.qianmo.retrofittest.persistentcookiejar.cache.SetCookieCache;
@@ -31,7 +32,7 @@ public class ApiManager {
         mOkHttpClient = new OkHttpClient.Builder().cookieJar(cookieJar).build();
         mRetrofit = new Retrofit.Builder()
                 //.addConverterFactory(GsonConverterFactory.create())
-                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(JsonConverterFactory.create())
                 .baseUrl(Config.BASEURL)
                 .client(mOkHttpClient)
                 .build();
