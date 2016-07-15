@@ -8,7 +8,10 @@ import com.qianmo.retrofittest.persistentcookiejar.PersistentCookieJar;
 import com.qianmo.retrofittest.persistentcookiejar.cache.SetCookieCache;
 import com.qianmo.retrofittest.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
@@ -17,6 +20,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * @Date: 2016/7/5 11:40
  */
 public class ApiManager {
+
+    private static final int TIMEOUT_READ = 15;
+    private static final int TIMEOUT_CONNECTION = 15;
 
     private static ApiManager sInstace;
 
@@ -29,7 +35,15 @@ public class ApiManager {
 
     private void initRetrofit(Context context) {
         ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
-        mOkHttpClient = new OkHttpClient.Builder().cookieJar(cookieJar).build();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        mOkHttpClient = new OkHttpClient.Builder()
+                //.addInterceptor(interceptor)
+                .addNetworkInterceptor(interceptor)
+                .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
+                .connectTimeout(TIMEOUT_CONNECTION, TimeUnit.SECONDS)
+                .cookieJar(cookieJar)
+                .build();
         mRetrofit = new Retrofit.Builder()
                 //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(JsonConverterFactory.create())

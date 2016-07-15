@@ -56,13 +56,27 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                Log.e("fff", "-------call====111=" + call);
-                Log.e("fff", "-------response=====" + response.toString());
-                Log.e("fff", "-------body=====" + response.body());
-                Log.e("fff", "-------message=====" + response.message());
-                Log.e("fff", "-------code=====" + response.code());
-                Log.e("fff", "-------headers=====" + response.headers());
-                Log.e("fff", "-------errorBody=====" + response.errorBody());
+//                Log.e("fff", "-------call====111=" + call);
+//                Log.e("fff", "-------response=====" + response.toString());
+//                Log.e("fff", "-------body=====" + response.body());
+//                Log.e("fff", "-------message=====" + response.message());
+//                Log.e("fff", "-------code=====" + response.code());
+//                Log.e("fff", "-------headers=====" + response.headers());
+//                Log.e("fff", "-------errorBody=====" + response.errorBody());
+
+
+                Call<JSONObject> call1 = ApiManager.getInstace(MainActivity.this).getUserApi().getUser();
+                call1.enqueue(new Callback<JSONObject>() {
+                    @Override
+                    public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<JSONObject> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
