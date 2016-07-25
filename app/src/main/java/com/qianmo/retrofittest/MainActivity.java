@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
          * RxAndroid实现
          */
         Observable<JSONObject> observable = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
-        observable.observeOn(Schedulers.newThread())
-                .subscribeOn(AndroidSchedulers.mainThread())
+        observable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<JSONObject>() {
                     @Override
                     public void onStart() {
