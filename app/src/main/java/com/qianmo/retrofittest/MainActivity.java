@@ -9,6 +9,11 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -20,71 +25,63 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
-//        mOkHttpClient = new OkHttpClient.Builder().cookieJar(cookieJar).build();
+//        Call<JSONObject> call = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
 //
-//        Retrofit retrofit = new Retrofit.Builder()
-//                //.addConverterFactory(GsonConverterFactory.create())
-//                .addConverterFactory(ScalarsConverterFactory.create())
-//                .baseUrl(Config.BASEURL)
-//                .client(mOkHttpClient)
-//                .build();
-//
-//        UserApi userApi = retrofit.create(UserApi.class);
-
-
-        Call<JSONObject> call = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
-
-//        new BaseRequest(this,call).handleRequest(new ResponseCallBack() {
+//        call.enqueue(new Callback<JSONObject>() {
 //            @Override
-//            public void onResponse(Call call, Response response) {
-//                super.onResponse(call, response);
+//            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+////                Log.e("fff", "-------call====111=" + call);
+////                Log.e("fff", "-------response=====" + response.toString());
+////                Log.e("fff", "-------body=====" + response.body());
+//
+//                Call<JSONObject> call1 = ApiManager.getInstace(MainActivity.this).getUserApi().getUser();
+//                call1.enqueue(new Callback<JSONObject>() {
+//                    @Override
+//                    public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<JSONObject> call, Throwable t) {
+//
+//                    }
+//                });
 //            }
 //
 //            @Override
-//            public void onFailure(Call call, Throwable t) {
-//                super.onFailure(call, t);
-//            }
-//
-//            @Override
-//            public void onRequest() {
-//                super.onRequest();
+//            public void onFailure(Call<JSONObject> call, Throwable t) {
+//                Log.e("fff", "-------call====222=" + call);
+//                Log.e("fff", "-------Throwable====222=" + t);
 //            }
 //        });
 
-
-        call.enqueue(new Callback<JSONObject>() {
-            @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-//                Log.e("fff", "-------call====111=" + call);
-//                Log.e("fff", "-------response=====" + response.toString());
-//                Log.e("fff", "-------body=====" + response.body());
-//                Log.e("fff", "-------message=====" + response.message());
-//                Log.e("fff", "-------code=====" + response.code());
-//                Log.e("fff", "-------headers=====" + response.headers());
-//                Log.e("fff", "-------errorBody=====" + response.errorBody());
-
-
-                Call<JSONObject> call1 = ApiManager.getInstace(MainActivity.this).getUserApi().getUser();
-                call1.enqueue(new Callback<JSONObject>() {
+        /**
+         * RxAndroid实现
+         */
+        Observable<JSONObject> observable = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
+        observable.observeOn(Schedulers.newThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<JSONObject>() {
                     @Override
-                    public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
+                    public void onStart() {
+                        Log.e("fff", "-------onStart=====");
                     }
 
                     @Override
-                    public void onFailure(Call<JSONObject> call, Throwable t) {
+                    public void onCompleted() {
+                        Log.e("fff", "-------onCompleted=====");
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("fff", "-------onNext=====");
+                    }
+
+                    @Override
+                    public void onNext(JSONObject jsonObject) {
+                        Log.e("fff", "-------onNext=====" + jsonObject.toString());
                     }
                 });
-            }
-
-            @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
-                Log.e("fff", "-------call====222=" + call);
-                Log.e("fff", "-------Throwable====222=" + t);
-            }
-        });
     }
 
 

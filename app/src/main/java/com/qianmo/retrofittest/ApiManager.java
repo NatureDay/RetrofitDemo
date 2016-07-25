@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
@@ -47,6 +48,8 @@ public class ApiManager {
         mRetrofit = new Retrofit.Builder()
                 //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(JsonConverterFactory.create())
+                // RxAndroid实现
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(Config.BASEURL)
                 .client(mOkHttpClient)
                 .build();
