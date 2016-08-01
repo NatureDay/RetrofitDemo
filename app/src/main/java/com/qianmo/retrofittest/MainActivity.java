@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         /**
          * RxAndroid实现
          */
-        Observable<JSONObject> observable = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
-        observable.observeOn(AndroidSchedulers.mainThread())
+        ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<JSONObject>() {
                     @Override
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("fff", "-------onNext=====");
+                        Log.e("fff", "-------onError=====" + NetworkErrorHelper.getMessage(e));
                     }
 
                     @Override
