@@ -16,26 +16,31 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * @Auther: Administrator
- * @Date: 2016/7/5 11:40
+ * Created by Administrator on 2016/8/3.
  */
-public class ApiManager {
+public class RetrofitManager {
 
     private static final String HTTP_RESPONSE_CACHE = "HttpResponseCache";
     private static final int HTTP_RESPONSE_DISK_CACHE_MAX_SIZE = 10 * 1024 * 1024;
     private static final int TIMEOUT_READ = 15;
     private static final int TIMEOUT_CONNECTION = 15;
 
-    private static ApiManager sInstace;
+    private static RetrofitManager sInstace;
 
     private OkHttpClient mOkHttpClient;
     private Retrofit mRetrofit;
 
-    public ApiManager(Context context) {
+    public RetrofitManager(Context context) {
         initRetrofit(context);
+    }
+
+    public static RetrofitManager getInstace(Context context) {
+        if (sInstace == null) {
+            sInstace = new RetrofitManager(context.getApplicationContext());
+        }
+        return sInstace;
     }
 
     private void initRetrofit(Context context) {
@@ -64,27 +69,12 @@ public class ApiManager {
                 .build();
     }
 
-    public static ApiManager getInstace(Context context) {
-        if (sInstace == null) {
-            sInstace = new ApiManager(context.getApplicationContext());
-        }
-        return sInstace;
+    public Retrofit getRetrofit() {
+        return mRetrofit;
     }
 
-    private UserApi mUserApi;
-    private PersonApi mPersonApi;
-
-    public UserApi getUserApi() {
-        if (mUserApi == null) {
-            mUserApi = mRetrofit.create(UserApi.class);
-        }
-        return mUserApi;
+    public <T> T create(Class<T> service) {
+        return mRetrofit.create(service);
     }
 
-    public PersonApi getPersonApi() {
-        if (mPersonApi == null) {
-            mPersonApi = mRetrofit.create(PersonApi.class);
-        }
-        return mPersonApi;
-    }
 }
