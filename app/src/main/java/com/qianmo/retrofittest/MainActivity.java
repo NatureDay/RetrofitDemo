@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * RxAndroid实现
          */
-        RetrofitManager.getInstace(this).create(UserApi.class).login("18505539466", "123456", true)
+        RetrofitManager.getInstace(this).create(UserApi.class).login("***", "***", true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<JSONObject>() {
