@@ -3,22 +3,22 @@ package com.qianmo.retrofittest;
 import android.content.Context;
 
 import com.qianmo.retrofittest.converter.JsonConverterFactory;
-import com.qianmo.retrofittest.persistentcookiejar.ClearableCookieJar;
-import com.qianmo.retrofittest.persistentcookiejar.PersistentCookieJar;
-import com.qianmo.retrofittest.persistentcookiejar.cache.SetCookieCache;
-import com.qianmo.retrofittest.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import java.io.File;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 /**
- * Created by Administrator on 2016/8/3.
+ * 网络请求封装类，以Retrofit2框架为核心
  */
 public class RetrofitManager {
 
@@ -38,25 +38,25 @@ public class RetrofitManager {
 
     public static RetrofitManager getInstace(Context context) {
         if (sInstace == null) {
-            sInstace = new RetrofitManager(context.getApplicationContext());
+            synchronized (RetrofitManager.class) {
+                sInstace = new RetrofitManager(context.getApplicationContext());
+            }
         }
         return sInstace;
     }
 
     private void initRetrofit(Context context) {
-        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+        CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
         File file = new File(context.getExternalCacheDir(), HTTP_RESPONSE_CACHE);
         Cache cache = new Cache(file, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE);
-
         mOkHttpClient = new OkHttpClient.Builder()
                 //.addInterceptor(interceptor)
                 .addNetworkInterceptor(interceptor)
                 .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
                 .connectTimeout(TIMEOUT_CONNECTION, TimeUnit.SECONDS)
-                .cookieJar(cookieJar)
+                .cookieJar(new JavaNetCookieJar(cookieHandler))
                 .cache(cache)
                 .build();
         mRetrofit = new Retrofit.Builder()
