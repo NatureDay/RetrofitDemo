@@ -58,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
         /**
          * RxAndroid实现
          */
-        RetrofitManager.getInstace(this).create(UserApi.class).login("***", "***", true)
+        RetrofitManager.getInstace(this).create(UserApi.class).login("18505539466", "123456")
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<JSONObject>() {
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<ApiResponse<UserEntity>>() {
+
                     @Override
                     public void onStart() {
                         Log.e("fff", "-------onStart=====");
@@ -78,10 +79,31 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(JSONObject jsonObject) {
-                        Log.e("fff", "-------onNext=====" + jsonObject.toString());
+                    public void onNext(ApiResponse<UserEntity> userEntityApiResponse) {
+                        Log.e("fff", "-------onNext=====" + userEntityApiResponse.toString());
                     }
                 });
+//        new Subscriber<JSONObject>() {
+//                    @Override
+//                    public void onStart() {
+//                        Log.e("fff", "-------onStart=====");
+//                    }
+//
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.e("fff", "-------onCompleted=====");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.e("fff", "-------onError=====" + NetworkErrorHelper.getMessage(e));
+//                    }
+//
+//                    @Override
+//                    public void onNext(JSONObject jsonObject) {
+//                        Log.e("fff", "-------onNext=====" + jsonObject.toString());
+//                    }
+//                });
     }
 
 

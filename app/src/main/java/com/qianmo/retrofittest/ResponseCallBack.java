@@ -10,6 +10,9 @@ import retrofit2.Response;
  */
 public abstract class ResponseCallBack<T> implements Callback<T> {
 
+
+
+
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
 

@@ -19,8 +19,8 @@ public interface UserApi {
     Call<JSONObject> getUser();*/
 
     @FormUrlEncoded
-    @POST("login")
-    Observable<JSONObject> login(@Field("username") String username, @Field("pwd") String pwd, @Field("remember_me") boolean rember);
+    @POST("noa/login")
+    Observable<ApiResponse<UserEntity>> login(@Field("user_name") String phone, @Field("password") String phonecode);
 
     @GET("buyer/total")
     Observable<JSONObject> getUser();

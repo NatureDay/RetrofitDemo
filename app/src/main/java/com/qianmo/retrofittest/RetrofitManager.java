@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 网络请求封装类，以Retrofit2框架为核心
@@ -60,8 +61,8 @@ public class RetrofitManager {
                 .cache(cache)
                 .build();
         mRetrofit = new Retrofit.Builder()
-                //.addConverterFactory(GsonConverterFactory.create())
-                .addConverterFactory(JsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(JsonConverterFactory.create())
                 // RxAndroid实现
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(Config.BASEURL)
