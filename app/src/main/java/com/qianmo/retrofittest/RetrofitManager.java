@@ -33,16 +33,20 @@ public class RetrofitManager {
     private OkHttpClient mOkHttpClient;
     private Retrofit mRetrofit;
 
-    public RetrofitManager(Context context) {
+    private RetrofitManager(Context context) {
         initRetrofit(context);
     }
 
-    public static RetrofitManager getInstace(Context context) {
+    public static RetrofitManager init(Context context) {
         if (sInstace == null) {
             synchronized (RetrofitManager.class) {
                 sInstace = new RetrofitManager(context.getApplicationContext());
             }
         }
+        return sInstace;
+    }
+
+    public static RetrofitManager getInstace() {
         return sInstace;
     }
 

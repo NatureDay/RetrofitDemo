@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        RetrofitManager.init(this);
+
 //        Call<JSONObject> call = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
 //
 //        call.enqueue(new Callback<JSONObject>() {
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * RxAndroid实现
          */
-        RetrofitManager.getInstace(this).create(UserApi.class).login("18505539466", "123456")
+        RetrofitManager.getInstace().create(UserApi.class).login("18505539466", "123456")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<ApiResponse<UserEntity>>() {
