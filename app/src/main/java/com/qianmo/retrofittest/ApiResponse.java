@@ -52,4 +52,8 @@ public class ApiResponse<T> {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public boolean isSuccessful(){
+        return code == 20000;
+    }
 }

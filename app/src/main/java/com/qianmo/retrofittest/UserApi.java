@@ -9,20 +9,26 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
-
 public interface UserApi {
-/*    @FormUrlEncoded
-    @POST("login")
-    Call<JSONObject> login(@Field("username") String username, @Field("pwd") String pwd, @Field("remember_me") boolean rember);
-
-    @GET("buyer/total")
-    Call<JSONObject> getUser();*/
 
     @FormUrlEncoded
-    @POST("noa/login")
-    Observable<ApiResponse<UserEntity>> login(@Field("user_name") String phone, @Field("password") String phonecode);
+    @POST("login")
+    Call<ApiResponse> login(@Field("user_name") String username, @Field("password") String pwd);
 
     @GET("buyer/total")
-    Observable<JSONObject> getUser();
+    Call<JSONObject> getUser();
+
+    /**
+     * 获取资讯分类
+     */
+    @GET("noa/news/type_list")
+    Call<ApiResponse<JSONObject>> getNewsType();
+
+//    @FormUrlEncoded
+//    @POST("noa/login")
+//    Observable<ApiResponse<UserEntity>> login(@Field("user_name") String phone, @Field("password") String phonecode);
+
+//    @GET("buyer/total")
+//    Observable<JSONObject> getUser();
 
 }

@@ -1,5 +1,6 @@
 package com.qianmo.retrofittest;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RetrofitManager.init(this);
+
+        new HttpRequest<JSONObject>(this) {
+            @NonNull
+            @Override
+            protected Call<ApiResponse<JSONObject>> createRequest() {
+                return RetrofitManager.getInstace().create(UserApi.class).getNewsType();
+            }
+
+            @Override
+            protected void onSuccess(JSONObject data) {
+                Log.e("fff", "-------onSuccess=====" + data);
+            }
+        };
 
 //        Call<JSONObject> call = ApiManager.getInstace(this).getUserApi().login("18505539466", "123456", true);
 //
@@ -60,31 +74,31 @@ public class MainActivity extends AppCompatActivity {
         /**
          * RxAndroid实现
          */
-        RetrofitManager.getInstace().create(UserApi.class).login("18505539466", "123456")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<ApiResponse<UserEntity>>() {
-
-                    @Override
-                    public void onStart() {
-                        Log.e("fff", "-------onStart=====");
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Log.e("fff", "-------onCompleted=====");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("fff", "-------onError=====" + NetworkErrorHelper.getMessage(e));
-                    }
-
-                    @Override
-                    public void onNext(ApiResponse<UserEntity> userEntityApiResponse) {
-                        Log.e("fff", "-------onNext=====" + userEntityApiResponse.toString());
-                    }
-                });
+//        RetrofitManager.getInstace().create(UserApi.class).login("18505539466", "123456")
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(new Subscriber<ApiResponse<UserEntity>>() {
+//
+//                    @Override
+//                    public void onStart() {
+//                        Log.e("fff", "-------onStart=====");
+//                    }
+//
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.e("fff", "-------onCompleted=====");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.e("fff", "-------onError=====" + NetworkErrorHelper.getMessage(e));
+//                    }
+//
+//                    @Override
+//                    public void onNext(ApiResponse<UserEntity> userEntityApiResponse) {
+//                        Log.e("fff", "-------onNext=====" + userEntityApiResponse.toString());
+//                    }
+//                });
 //        new Subscriber<JSONObject>() {
 //                    @Override
 //                    public void onStart() {
@@ -106,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 //                        Log.e("fff", "-------onNext=====" + jsonObject.toString());
 //                    }
 //                });
+
+
     }
 
 
